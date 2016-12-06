@@ -15,4 +15,5 @@ It uses git code from the following sources:
 Please note that in order to function properly you need to populate the keys.yaml file with your Seeking Alpha (free) account login details as follow:
 
 username: &lt;your email address, used to log into Seeking Alpha&gt;
+
 password: &lt;your Seeking Alpha password&gt;
