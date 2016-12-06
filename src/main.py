@@ -11,12 +11,10 @@ from Tkinter import *
 from os.path import join
 import pandas as pd
 from login import loginSA
-from constituents import constituents
 from getTickers import getTickers
 from findTranscriptsURLs import findTranscriptsURLs
 from relevantExtracts import relevantExtracts
 from pdfgen import pdfgen
-
 
 
 file = join("..", "data/constituents.csv")
