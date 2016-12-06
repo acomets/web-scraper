@@ -67,7 +67,6 @@ class App:
         keywords = self.keywords.get()
         tickers = getTickers(sector)
         keywords = keywords.split(', ')
-        print ', '.join(keywords)
         n_last_quarters = 4
         
         relevant_extracts = []
