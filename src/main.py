@@ -73,7 +73,8 @@ class App:
         
         for ticker in tickers:
             urls = findTranscriptsURLs(session, ticker, n_last_quarters)
-            relevant_extracts += relevantExtracts(session, urls, keywords)
+            if urls != []:
+                relevant_extracts += relevantExtracts(session, urls, keywords)
        
         pdfgen(relevant_extracts, sector, keywords)
     
