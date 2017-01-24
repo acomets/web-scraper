@@ -23,7 +23,7 @@ def findTranscriptsURLs(session, ticker, n):
     soup = BeautifulSoup(r.content, 'html.parser')
     
     transcripts = []
-    transcriptsAll = soup.find_all("a", {"sasource":"qp_transcripts"})
+    transcriptsAll = soup.find_all("a", {"sasource":"qp_analysis"})
     for transcript in transcriptsAll:
         if "Earnings" in transcript.text and "Transcript" in transcript.text:
             transcripts.append(transcript.get("href"))

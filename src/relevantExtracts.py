@@ -49,15 +49,18 @@ def relevantExtracts(session, urls, keywords):
             print("Could not get time: ", e)
         ###print("Date time is: {0} and {1}".format(date, time))
         
-        bodyAll = soup.find_all("div", {"id":"a-body"})[0]
-        bodyAll = bodyAll.text
-        body = bodyAll.split("\n")
-        for p in body:
-            if list(set(p.split()) & set(keywords)) != []:
-                extracts.append({"title": title,
-                                 "date": date,
-                                 "time": time, 
-                                 "bodyContent": p})
+        try:
+            bodyAll = soup.find_all("div", {"id":"a-body"})[0]
+            bodyAll = bodyAll.text
+            body = bodyAll.split("\n")
+            for p in body:
+                if list(set(p.split()) & set(keywords)) != []:
+                    extracts.append({"title": title,
+                                     "date": date,
+                                     "time": time, 
+                                     "bodyContent": p})
+        except:
+            print(url)
         #print(bodyAll)
         
     
