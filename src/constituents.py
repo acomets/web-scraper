@@ -16,7 +16,7 @@ datadir = join('..', 'data')
 if not exists(datadir):
     mkdir(datadir)
 source_page = urllib2.urlopen('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies').read()
-soup = BeautifulSoup(source_page, 'html.parser')
+soup = BeautifulSoup(source_page, 'lxml')
 table = soup.find("table", { "class" : "wikitable sortable" })
 
 # Fail now if we haven't found the right table

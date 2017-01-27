@@ -21,37 +21,32 @@ def relevantExtracts(session, urls, keywords):
     extracts = []
 
     userHeader = {"Referer": "http://seekingalpha.com/",
-            "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"}
+                  "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"}
     
-    for u in urls:
-        url = urljoin("http://seekingalpha.com/", u)
-        r = session.get(url, headers = userHeader)
+    for url in urls:
+        displayoptions = {'part': 'single'}
+        r = session.get(url, headers = userHeader, params = displayoptions)
         
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
+        sleep(0.1)
         
-        try:
-            title = soup.find_all("h1", {"itemprop":"headline"})[0].text
-        except:
-            print("Could not get title: ",url)
-            title = ''
+        headline = soup.find_all("h1", {"itemprop":"headline"})
+        title = headline[0].text if headline else 'Title missing'
         ###print("title: ", title)
     
-        dateTime = ''
-        date = ''
-        time = ''
-        try:
-            dateTime = soup.find_all("meta", {"property":"article:published_time"})[0]
-            #time1 = dateTime.get("content")
-            #time2 = dateTime.text
-            date = dateTime.get("content").split('T')[0]
-            time = dateTime.get("content").split('T')[1].split('Z')[0]
-        except Exception as e:
-            print("Could not get time: ", e)
+        dateTime = soup.find_all("meta", {"property":"article:published_time"})
+        date1 = dateTime[0].get("content") if dateTime else ''
+        date2 = date1.split('T') if date1 else ''
+        date = date2[0] if date2 else 'Date missing'
+        time1 = date2[1:] if date2 else ''
+        time2 = time1[0].split('Z') if time1 else ''
+        time = time2[0] if time2 else 'Time missing'
         ###print("Date time is: {0} and {1}".format(date, time))
         
-        try:
-            bodyAll = soup.find_all("div", {"id":"a-body"})[0]
-            bodyAll = bodyAll.text
+        
+        bodyAll = soup.find_all("div", {"id":"a-body"})
+        if bodyAll:
+            bodyAll = bodyAll[0].text
             body = bodyAll.split("\n")
             for p in body:
                 if list(set(p.split()) & set(keywords)) != []:
@@ -59,8 +54,11 @@ def relevantExtracts(session, urls, keywords):
                                      "date": date,
                                      "time": time, 
                                      "bodyContent": p})
-        except:
-            print(url)
+        else:
+            extracts.append({"title": title,
+                             "date": date,
+                             "time": time, 
+                             "bodyContent": "Unable to retrieve content from URL: " + url})
         #print(bodyAll)
         
     

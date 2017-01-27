@@ -20,13 +20,13 @@ def findTranscriptsURLs(session, ticker, n):
     url = urljoin('http://seekingalpha.com/symbol/', '/'.join([ticker, "earnings", "transcripts"]))
     r = session.get(url, headers = userHeader)
     
-    soup = BeautifulSoup(r.content, 'html.parser')
+    soup = BeautifulSoup(r.content, 'lxml')
     
     transcripts = []
     transcriptsAll = soup.find_all("a", {"sasource":"qp_analysis"})
     for transcript in transcriptsAll:
         if "Earnings" in transcript.text and "Transcript" in transcript.text:
-            transcripts.append(transcript.get("href"))
+            transcripts.append(urljoin('http://seekingalpha.com/', transcript.get("href")))
     #print("Tickers About are: {0}".format(', '.join(tickersAbout)))
     transcriptsStr = ', '.join(transcripts)
     
