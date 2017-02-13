@@ -49,7 +49,7 @@ def relevantExtracts(session, urls, keywords):
             bodyAll = bodyAll[0].text
             body = bodyAll.split("\n")
             for p in body:
-                if list(set(p.split()) & set(keywords)) != []:
+                if any(keyword in p for keyword in keywords):
                     extracts.append({"title": title,
                                      "date": date,
                                      "time": time, 
